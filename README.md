@@ -89,7 +89,23 @@ This library provides a nice, easy, performant way to perform sanitization on
 translated strings. Rather than requiring you to work with the internals of
 kses, it's much closer to functions like `esc_html`.
 
-Taking our above example, we can modify it to only allow `a` tags:
+Security is only useful if it's also usable. For the most part, `whitelist_html`
+can be used in exactly the same way developers are used to using other escaping
+functions.
+
+A quick example to demonstrate how easy it is:
+```php
+<!-- Previously -->
+<p><?php _e( 'This is a terrific use of <code>WP_Error</code>.' ) ?></p>
+
+<!-- Secure version -->
+<p><?php print_whitelist_html( __( 'This is a terrific use of <code>WP_Error</code>.' ), 'code' ) ?></p>
+```
+
+Even if a malicious translator changed this to include a link to a spam site (or
+worse), this would be caught and stripped by `whitelist_html`.
+
+Taking our original example from above, we can modify it to only allow `a` tags:
 
 ```php
 $text = whitelist_html(

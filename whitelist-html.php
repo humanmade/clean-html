@@ -86,3 +86,17 @@ function whitelist_html( $text, $allowedtags = array(), $context = '' ) {
 	 */
 	return apply_filters( 'esc_html_whitelisted', $sanitized, $text, $allowedtags, $context );
 }
+
+/**
+ * Escapes text for HTML output, allowing certain tags, then outputs.
+ *
+ * @see whitelist_html
+ *
+ * @param string $text Content to escape
+ * @param array $allowedtags Allowed tags, {@see whitelist_html}.
+ * @param string $context kses context to use, {@see wp_kses_allowed_html}.
+ * @return string Escaped string for output into HTML context.
+ */
+function print_whitelist_html( $text, $allowedtags = array(), $context = '' ) {
+	echo whitelist_html( $text, $allowedtags, $context );
+}
