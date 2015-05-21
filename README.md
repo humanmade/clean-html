@@ -128,6 +128,7 @@ $text = whitelist_html(
 		'span' => array(
 			'class' => true,
 		),
+	)
 );
 ```
 
