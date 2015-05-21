@@ -22,7 +22,7 @@
  *
  * For example:
  *
- *     esc_html_whitelisted( __( 'Hello <a href="http://example.com">World!</a>' ), 'a' );
+ *     whitelist_html( __( 'Hello <a href="http://example.com">World!</a>' ), 'a' );
  *
  * This example would strip any tag except `a`, but would allow the default
  * attributes on it (`href` and `title`).
@@ -59,7 +59,7 @@ function whitelist_html( $text, $allowedtags = array(), $context = '' ) {
 
 		if ( ! is_string( $tag ) ) {
 			// Not concise form, what even is this?
-			_doing_it_wrong( 'esc_html_whitelisted', '$allowedtags must consist of strings or kses-style arrays' );
+			_doing_it_wrong( 'whitelist_html', '$allowedtags must consist of strings or kses-style arrays' );
 			continue;
 		}
 
@@ -84,7 +84,7 @@ function whitelist_html( $text, $allowedtags = array(), $context = '' ) {
 	 * @param string $allowedtags Tags requested to whitelist.
 	 * @param string
 	 */
-	return apply_filters( 'esc_html_whitelisted', $sanitized, $text, $allowedtags, $context );
+	return apply_filters( 'whitelist_html', $sanitized, $text, $allowedtags, $context );
 }
 
 /**
