@@ -94,7 +94,7 @@ can be used in exactly the same way developers are used to using other escaping
 functions.
 
 A quick example to demonstrate how easy it is:
-```php
+```html
 <!-- Previously -->
 <p><?php _e( 'This is a terrific use of <code>WP_Error</code>.' ) ?></p>
 
