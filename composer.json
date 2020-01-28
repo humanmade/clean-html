@@ -1,7 +1,6 @@
 {
 	"name": "humanmade/whitelist-html",
 	"description": "Whitelist HTML for WordPress. Adds esc_*()-like function to allow some HTML.",
-	"type": "wordpress-plugin",
 	"license": "GPL-3.0",
 	"authors": [
 		{
@@ -9,5 +8,10 @@
 			"email": "ryan@humanmade.com"
 		}
 	],
-	"require": {}
+	"require": {},
+	"autoload": {
+		"files": [
+			"whitelist-html.php"
+		]
+	}
 }
