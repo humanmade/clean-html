@@ -14,7 +14,7 @@
  *
  * The concise form, useful for inline usage on output, is in the form of
  * `[ 'element', 'otherelement' ]` - This concise form takes the attribute list
- * from WP core's attribute whitelist for a good-enough list for most usages.
+ * from WP core's safe attribute list for a good-enough list for most usages.
  * This can also be passed as a comma separated string.
  *
  * You can also mix these forms, so something like
@@ -22,7 +22,7 @@
  *
  * For example:
  *
- *     whitelist_html( __( 'Hello <a href="http://example.com">World!</a>' ), 'a' );
+ *     clean_html( __( 'Hello <a href="http://example.com">World!</a>' ), 'a' );
  *
  * This example would strip any tag except `a`, but would allow the default
  * attributes on it (`href` and `title`).
@@ -41,7 +41,7 @@
  *
  * @return string             Escaped string for output into HTML context.
  */
-function whitelist_html( $text, $allowedtags = array(), $context = '' ) {
+function clean_html( $text, $allowedtags = array(), $context = '' ) {
 
 	$actually_allowed = array();
 	$default_list     = wp_kses_allowed_html( $context );
@@ -61,7 +61,7 @@ function whitelist_html( $text, $allowedtags = array(), $context = '' ) {
 
 		if ( ! is_string( $tag ) ) {
 			// Not concise form, what even is this?
-			_doing_it_wrong( 'whitelist_html', '$allowedtags must consist of strings or kses-style arrays' );
+			_doing_it_wrong( 'clean_html', '$allowedtags must consist of strings or kses-style arrays' );
 			continue;
 		}
 
@@ -83,23 +83,23 @@ function whitelist_html( $text, $allowedtags = array(), $context = '' ) {
 	 *
 	 * @param string $sanitized   The text after it has been escaped.
 	 * @param string $text        The text before it has been escaped.
-	 * @param string $allowedtags Tags requested to whitelist.
+	 * @param string $allowedtags Allowed tags.
 	 * @param string $context     Original kses context to use, {@see wp_kses_allowed_html}.
 	 */
-	return apply_filters( 'whitelist_html', $sanitized, $text, $allowedtags, $context );
+	return apply_filters( 'clean_html', $sanitized, $text, $allowedtags, $context );
 }
 
 /**
  * Escapes text for HTML output, allowing certain tags, then outputs.
  *
- * @see whitelist_html
+ * @see clean_html
  *
  * @param string $text        Content to escape.
- * @param array  $allowedtags Allowed tags, {@see whitelist_html}.
+ * @param array  $allowedtags Allowed tags, {@see clean_html}.
  * @param string $context     kses context to use, {@see wp_kses_allowed_html}.
  *
  * @return string             Escaped string for output into HTML context.
  */
-function print_whitelist_html( $text, $allowedtags = array(), $context = '' ) {
-	echo whitelist_html( $text, $allowedtags, $context );
+function print_clean_html( $text, $allowedtags = array(), $context = '' ) {
+	echo clean_html( $text, $allowedtags, $context );
 }
