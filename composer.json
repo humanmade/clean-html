@@ -1,5 +1,5 @@
 {
-	"name": "humanmade/whitelist-html",
+	"name": "humanmade/clean-html",
 	"description": "Safe HTML for WordPress. Adds esc_*()-like function to allow some HTML.",
 	"license": "GPL-3.0",
 	"authors": [
