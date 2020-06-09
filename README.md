@@ -1,4 +1,4 @@
-# Whitelist HTML
+# clean_html: Safe HTML for WordPress
 
 Introduces an `esc_*()`-like function for when you need to allow *some* HTML.
 
@@ -66,7 +66,7 @@ attack vector waiting to be exploited.
 WordPress contains functions specifically designed to help with this problem.
 After all, people can submit comments or posts with HTML in them, but WP can
 handle this fine. WordPress handles this through a library called kses, which
-sanitizes HTML down to a small, whitelisted subset of HTML. Posts can have more
+sanitizes HTML down to a small, safe subset of HTML. Posts can have more
 HTML tags than comments can, since they're usually semi-trusted users.
 
 kses is great, but is not typically used outside of large HTML blocks like post
@@ -78,18 +78,18 @@ However, Zack Tollman wrote a [fantastic post][tollmanz-kses] that calls into
 question this accepted knowledge of kses performance. Zack's findings show that
 while kses is worse with performance on longer pieces of content (like post
 content), it's actually closer to being on-par with other escaping for short
-strings. This is even more evident when reducing the whitelist of elements down
+strings. This is even more evident when reducing the allowed elements down
 from the default to just the elements you need.
 
 [tollmanz-kses]: https://www.tollmanz.com/wp-kses-performance/
 
-### `whitelist_html`
+### `clean_html`
 
 This library provides a nice, easy, performant way to perform sanitization on
 translated strings. Rather than requiring you to work with the internals of
 kses, it's much closer to functions like `esc_html`.
 
-Security is only useful if it's also usable. For the most part, `whitelist_html`
+Security is only useful if it's also usable. For the most part, `clean_html`
 can be used in exactly the same way developers are used to using other escaping
 functions.
 
@@ -99,16 +99,16 @@ A quick example to demonstrate how easy it is:
 <p><?php _e( 'This is a terrific use of <code>WP_Error</code>.' ) ?></p>
 
 <!-- Secure version -->
-<p><?php print_whitelist_html( __( 'This is a terrific use of <code>WP_Error</code>.' ), 'code' ) ?></p>
+<p><?php print_clean_html( __( 'This is a terrific use of <code>WP_Error</code>.' ), 'code' ) ?></p>
 ```
 
 Even if a malicious translator changed this to include a link to a spam site (or
-worse), this would be caught and stripped by `whitelist_html`.
+worse), this would be caught and stripped by `clean_html`.
 
 Taking our original example from above, we can modify it to only allow `a` tags:
 
 ```php
-$text = whitelist_html(
+$text = clean_html(
 	sprintf(
 		__( 'This is some text <a href="%1$s">with a link</a>'),
 		'http://example.com/'
@@ -121,7 +121,7 @@ It's that easy. You can do this with multiple elements as well, using a
 comma-separated string or list of elements:
 
 ```php
-$text = whitelist_html(
+$text = clean_html(
 	sprintf(
 		__( 'This is <code>some</code> text <a href="%1$s">with a link</a>'),
 		'http://example.com/'
@@ -134,7 +134,7 @@ If you need custom attributes, you can use kses-style attribute specifiers.
 These can be mixed too:
 
 ```php
-$text = whitelist_html(
+$text = clean_html(
 	sprintf(
 		__( 'This is <span class="x">some</span> text <a href="%1$s">with a link</a>'),
 		'http://example.com/'
@@ -153,14 +153,14 @@ $text = whitelist_html(
 
 In a quick test, the string
 `'hello with a <a href="wak://example.com">malicious extra link!<///q><o>b'` was
-run through both `whitelist_html` (with only `a`) and `esc_html` with 10,000
+run through both `clean_html` (with only `a`) and `esc_html` with 10,000
 iterations. While the two functions don't perform the same task, they're both
 escaping functions, so it's useful to compare performance to understand whether
 this approach can be used in production code.
 
-In an unscientific trial, this gave figures of 0.96s for `whitelist_html` and
+In an unscientific trial, this gave figures of 0.96s for `clean_html` and
 1.07s for `esc_html` for 10,000 trials each. This indicates that
-`whitelist_html` is at least on the order of other escaping functions.
+`clean_html` is at least on the order of other escaping functions.
 
 
 ## Using this Library
@@ -168,7 +168,7 @@ In an unscientific trial, this gave figures of 0.96s for `whitelist_html` and
 Two steps to using this library:
 
 1. Add this library in as a git submodule.
-2. Load `whitelist-html.php` before you need to use it. We recommend in
+2. Load `clean-html.php` before you need to use it. We recommend in
    `mu-plugins`, but you can also load it in via `wp-config.php` if you want it
    earlier.
 
