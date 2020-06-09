@@ -11,7 +11,7 @@
 	"require": {},
 	"autoload": {
 		"files": [
-			"whitelist-html.php"
+			"clean-html.php"
 		]
 	}
 }
